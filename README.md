@@ -1,2 +1,2 @@
-# json_xml_tools
-Wrappers for Jackson JSON and XML tools
+# json_tools
+Wrappers for Jackson JSON tools and loading configuration data from JSOM files
