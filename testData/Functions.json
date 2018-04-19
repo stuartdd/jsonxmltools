@@ -1,0 +1,8 @@
+{
+  "echoScriptOutput" : false,
+  "poleForTime" : 200000,
+  "commands" : {
+    "ds" : [ "diskStatus", "./diskStatus.sh" ],
+    "log" : [ "rsyncLogs", "./listFiles.sh", "/logs", "log" ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+    "name": "ConfigDataFile.json",
+    "resources": {
+        "heating": {
+            "syncAfter": 3600
+        },
+        "historyMaxLen": 20,
+        "root": "/home/pi/PiServer/web",
+        "users": {
+            "stuart": "/media/USBHDD1/shares/stuart",
+            "shared": "/media/USBHDD1/shares/shared"
+        },
+        "locations": {
+            "logs": "/logs",
+            "cache": "/logs/cache"
+        }
+    },
+    "functions": {
+        "echoScriptOutput": false,
+        "poleForTime": 200000,
+        "commands": {
+            "ds": ["diskStatus", "./diskStatus.sh"],
+            "log": ["rsyncLogs", "./listFiles.sh", "/logs", "log"]
+        }
+    }
+}
