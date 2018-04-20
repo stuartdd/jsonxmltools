@@ -57,12 +57,8 @@ public class TestJson {
         String myBeanJson = JsonUtils.toJson(myBean);
         Assert.assertEquals(TEST_JSON, myBeanJson);
 
-//        Map<String, Object> map = JsonUtils.mapFromJson(TEST_JSON);
-//        String myMapJson = JsonUtils.toJson(map);
-//        Assert.assertEquals(TEST_JSON, myBeanJson);
-
         String myBeanJsonFormatted = JsonUtils.toJsonFormatted(myBean);
-        Assert.assertEquals(TEST_JSON_FMT, myBeanJsonFormatted);
+        Assert.assertEquals(str(TEST_JSON_FMT), str(myBeanJsonFormatted));
     }
 
     @Test(expected = JsonToObjectException.class)
@@ -114,7 +110,6 @@ public class TestJson {
 //    public void testMapStreamNull() {
 //        JsonUtils.mapFromJson((InputStream) null);
 //    }
-
     @Test
     public void testJsonMap() {
         Map<String, Object> map = JsonUtils.mapFromJson(TEST_JSON);
@@ -184,5 +179,15 @@ public class TestJson {
             this.c = c;
         }
 
+    }
+
+    private String str(String string) {
+        StringBuilder sb = new StringBuilder();
+        for (char c:string.toCharArray()) {
+            if (c >= ' ') {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
     }
 }
