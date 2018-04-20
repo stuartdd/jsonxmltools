@@ -1,5 +1,4 @@
 {
-    "name": "ConfigDataFile.json",
     "resources": {
         "heating": {
             "syncAfter": 3600

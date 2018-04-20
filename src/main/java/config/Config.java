@@ -26,7 +26,6 @@ public class Config {
         try {
             cfg = JsonUtils.beanFromJson(clazz, json);
         } catch (JsonToObjectException ex) {
-            ex.printStackTrace();
             throw new JsonConfigException("Config load Failed:" + ex.getMessage(), ex);
         }
         return returnValidated(cfg);

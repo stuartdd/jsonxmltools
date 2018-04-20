@@ -6,7 +6,7 @@ package config;
  * @author stuartdd
  */
 public class ConfigData implements Validatable {
-
+    private boolean validated = false;
     private String name;
     private Resources resources;
     private Functions functions;
@@ -21,6 +21,7 @@ public class ConfigData implements Validatable {
         if (configData.getName().trim().length()==0) {
             return "ConfigData name is empty";
         }
+        validated = true;
         return null;
     }
 
@@ -48,4 +49,9 @@ public class ConfigData implements Validatable {
         this.functions = functions;
     }
 
+    public boolean isValidated() {
+        return validated;
+    }
+
+ 
  }

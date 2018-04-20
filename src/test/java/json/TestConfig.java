@@ -1,14 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package json;
 
 import config.Config;
 import config.ConfigData;
 import config.Functions;
+import config.Heating;
 import config.JsonConfigException;
+import config.Resources;
 import java.io.File;
 import java.util.List;
 import org.junit.Assert;
@@ -25,11 +22,14 @@ public class TestConfig {
         Functions functions = (Functions) Config.configFromJsonFile(Functions.class, new File("testData/Functions.json"));
         assertFunctions(functions);
     }
-    
+
     @Test()
     public void testConfigDataFile() {
         ConfigData config = (ConfigData) Config.configFromJsonFile(ConfigData.class, new File("testData/ConfigDataFile.json"));
-        System.out.println(config);
+        Assert.assertEquals("ConfigDataFile.json", config.getName());
+        Assert.assertTrue(config.isValidated());
+        assertResources(config.getResources());
+        assertFunctions(config.getFunctions());
     }
 
     private void assertFunctions(Functions f) {
@@ -45,14 +45,48 @@ public class TestConfig {
         Assert.assertNotNull(listLog);
     }
 
+    private void assertResources(Resources r) {
+        assertHeating(r.getHeating());
+        Assert.assertEquals(20, r.getHistoryMaxLen());
+        Assert.assertEquals("/Server/web", r.getRoot());
+        Assert.assertEquals(2, r.getUsers().size());
+        Assert.assertEquals("/shares/stuart", r.getUsers().get("stuart"));
+        Assert.assertEquals("/shares/shared", r.getUsers().get("shared"));
+        Assert.assertEquals(2, r.getLocations().size());
+        Assert.assertEquals("/logs", r.getLocations().get("logs"));
+        Assert.assertEquals("/logs/cache", r.getLocations().get("cache"));
+    }
+
+    private void assertHeating(Heating h) {
+        Assert.assertEquals(3600, h.getSyncAfter());
+    }
+
     @Test(expected = JsonConfigException.class)
     public void testToConfigWrongFile() {
         Config.configFromJsonFile(ConfigData.class, new File("testData/TestConfig.json"));
     }
 
-    @Test(expected = JsonConfigException.class)
+    @Test()
     public void testToConfigFileNotFound() {
-        Config.configFromJsonFile(ConfigData.class, new File("testData/TestConfigNotFound.json"));
+        assertException("TestConfigNotFound", "Failed to parse JSON File");
     }
 
+    @Test()
+    public void testToConfigFileNoName() {
+        assertException("ConfigDataFileNoName", "ConfigData name is null");
+    }
+
+    private void assertException(String file, String contains) {
+        try {
+            Config.configFromJsonFile(ConfigData.class, new File("testData/"+file+".json"));
+            Assert.fail();
+        } catch (JsonConfigException ce) {
+            if (!ce.getMessage().contains(contains)) {
+                String error = "Exception ["+ce.getMessage()+"] no:["+contains+"]";
+                System.out.println(error);
+                Assert.fail(error);
+            }
+            
+        }
+    }
 }
