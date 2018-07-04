@@ -49,7 +49,7 @@ public class MappedXml extends DefaultHandler {
             stream = new ByteArrayInputStream(xml.getBytes(charset));
             parser.parse(stream, this);
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            throw new ParseXmlException("Failed to parse response", e);
+            throw new ParseXmlException("Failed to parse XML", e);
         } finally {
             if (stream != null) {
                 try {
@@ -158,7 +158,7 @@ public class MappedXml extends DefaultHandler {
 
     private void addAttributes(Map<String, String> resp, String key, Map<String, String> attributes) {
         for (Map.Entry<String, String> s : attributes.entrySet()) {
-            resp.put(key + ".{" + s.getKey() + "}", s.getValue());
+            resp.put(key + ".(" + s.getKey() + ")", s.getValue());
         }
     }
 
