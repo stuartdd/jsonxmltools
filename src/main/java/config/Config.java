@@ -18,17 +18,27 @@ public class Config {
         } catch (JsonToObjectException ex) {
             throw new JsonConfigException("Config load Failed:" + ex.getMessage(), ex);
         }
+        loaded(cfg);
         return returnValidated(cfg);
     }
 
-    public static Object configFromJsonFile(Class clazz, File json) {
+    public static Object configFromJsonFile(Class clazz, File jsonFile) {
         Object cfg;
         try {
-            cfg = JsonUtils.beanFromJson(clazz, json);
+            cfg = JsonUtils.beanFromJson(clazz, jsonFile);
         } catch (JsonToObjectException ex) {
             throw new JsonConfigException("Config load Failed:" + ex.getMessage(), ex);
         }
+        loaded(cfg);
         return returnValidated(cfg);
+    }
+    
+    public static Object configFromJsonFile(Class clazz, String jsonFileName) {
+        File jsonFile = new File(jsonFileName);
+        if (jsonFile.exists()) {
+            return configFromJsonFile(clazz, jsonFile);
+        }
+        throw new JsonConfigException("JSON File "+jsonFile.getAbsolutePath()+" does not exist");
     }
 
     public static Object configFromJsonStream(Class clazz, InputStream json) {
@@ -38,6 +48,7 @@ public class Config {
         } catch (JsonToObjectException ex) {
             throw new JsonConfigException("Config load Failed:" + ex.getMessage(), ex);
         }
+        loaded(cfg);
         return returnValidated(cfg);
     }
 
@@ -49,5 +60,11 @@ public class Config {
             }
         }
         return cfg;
+    }
+    
+    private static void loaded(Object cfg) {
+        if (cfg instanceof Loadable) {
+            ((Loadable) cfg).loaded(cfg);
+         }
     }
 }
