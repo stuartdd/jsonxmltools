@@ -42,19 +42,6 @@ public class XmlUtils {
         }
     }
     
-    public static String format(String xml) throws IOException, SAXException, ParserConfigurationException {
-        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        Document doc = db.parse(new InputSource(new StringReader(xml)));
-        OutputFormat format = new OutputFormat(doc);
-        format.setIndenting(true);
-        format.setIndent(2);
-        format.setLineWidth(Integer.MAX_VALUE);
-        Writer outxml = new StringWriter();
-        XMLSerializer serializer = new XMLSerializer(outxml, format);
-        serializer.serialize(doc);
-        return outxml.toString();
-    }
-
     /**
      * Convert an object in to a XML String representation
      *
